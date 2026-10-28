@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>CMSShopHelper</AssemblyName>
+    <!-- Your CMS 2021 install. Override with: dotnet build -p:GameDir="D:\Games\Car Mechanic Simulator 2021" -->
+    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Car Mechanic Simulator 2021</GameDir>
+    <MLDir>$(GameDir)\MelonLoader\net6</MLDir>
+    <Il2CppDir>$(GameDir)\MelonLoader\Il2CppAssemblies</Il2CppDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Compile against the game's files; never copy them into the output -->
+    <Reference Include="$(MLDir)\MelonLoader.dll" Private="false" />
+    <Reference Include="$(MLDir)\Il2CppInterop.Runtime.dll" Private="false" />
+    <Reference Include="$(Il2CppDir)\Il2Cppmscorlib.dll" Private="false" />
+    <Reference Include="$(Il2CppDir)\Il2CppSystem.dll" Private="false" />
+    <Reference Include="$(Il2CppDir)\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="$(Il2CppDir)\UnityEngine.InputLegacyModule.dll" Private="false" />
+    <Reference Include="$(Il2CppDir)\Assembly-CSharp-firstpass.dll" Private="false" />
+  </ItemGroup>
+  <!-- After building, copy the mod into the game's Mods folder -->
+  <Target Name="CopyToMods" AfterTargets="Build" Condition="Exists('$(GameDir)\Mods')">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GameDir)\Mods" />
+  </Target>
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Car Mechanic Simulator 2021</GameDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Mono.Cecil ships with MelonLoader -->
+    <Reference Include="$(GameDir)\MelonLoader\net6\Mono.Cecil.dll" />
+    <Reference Include="$(GameDir)\MelonLoader\net6\Mono.Cecil.Rocks.dll" />
+  </ItemGroup>
+</Project>

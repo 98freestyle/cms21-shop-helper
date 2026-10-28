@@ -1,0 +1,11 @@
+# build output
+bin/
+obj/
+*.user
+.vs/
+
+# never commit game or MelonLoader files
+*.dll
+*.pdb
+GameAssembly*
+global-metadata.dat
