@@ -12,7 +12,7 @@ namespace CMSShopHelper
 {
     public class Mod : MelonMod
     {
-        // Modes where F5 makes no sense (driving, photo mode, test track, dyno...)
+        // Game modes where F5 is ignored (driving, photo mode, test track, dyno, etc.)
         static readonly HashSet<gameMode> BlockedModes = new HashSet<gameMode>
         {
             gameMode.CarDrive, gameMode.PhotoMode, gameMode.PathTest, gameMode.Dyno,
@@ -27,16 +27,16 @@ namespace CMSShopHelper
 
         public override void OnUpdate()
         {
-            // Safety net: if the yes/no box closed without calling us back, give the player their controls back
-            // (waits 1s so the box has definitely opened before checking)
+            // If the yes/no box closed without calling back, return control to the player
+            // (waits 1s so the box has had time to open before checking)
             if (modeNeedsRestore && Time.unscaledTime - askShownAt > 1f && !IsAskWindowOpen())
             {
-                LoggerInstance.Msg("Yes/no box closed without an answer - restoring controls");
+                LoggerInstance.Msg("Yes/no box closed without an answer, restoring controls");
                 RestoreMode();
             }
 
             if (!Input.GetKeyDown(KeyCode.F5)) return;
-            if (Time.unscaledTime - lastPress < 0.5f) return;   // ignore key spam
+            if (Time.unscaledTime - lastPress < 0.5f) return;   // debounce
             lastPress = Time.unscaledTime;
 
             try { OnF5(); }
@@ -122,7 +122,7 @@ namespace CMSShopHelper
             return result;
         }
 
-        // Counts what's already on the shopping list and removes that many from what we'd add.
+        // Removes parts already on the shopping list from the list to add.
         // If the list can't be read, falls back to adding everything.
         List<string> SubtractAlreadyOnList(UIManager ui, List<string> needed, out int alreadyThere)
         {
